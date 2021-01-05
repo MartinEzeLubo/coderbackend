@@ -59,15 +59,9 @@ var monthsList = {
 
 
 
-
-
-
-
-
-
-// largestText(valores);
-// findFalse(valores);
-// sumElements(valores);
+largestText(valores);
+findFalse(valores);
+sumElements(valores);
 
 monthsList.mostrarMeses();
 monthsList.getNumeroMes("enero");
