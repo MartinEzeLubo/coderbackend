@@ -4,6 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script>
+        let listadoLibros = [];
+        let listadoMascotas = ['Tortuga','Conejo'];
+
+        class Libro{
+            constructor(titulo, autor){
+                this.titulo = titulo,
+                this.autor = autor;
+            }
+        };
+        
+        listadoLibros.push(new Libro('Harry Potter','J. K. Rowling'));
+        listadoLibros.push(new Libro('El Señor de los Anillos','J. R. R. Tolkien'));
+        listadoLibros.push(new Libro('El Principito','Antoine de Saint-Exupery'));
+
+
+        class Usuario{
+
+            constructor (nombre, apellido, libros, mascotas){
+                this.nombre = nombre;
+                this.apellido = apellido;
+                this.libros = libros;
+                this.mascotas = mascotas;
+
+                
+            }
+
+            getFullName(){
+                var fullName = `${this.nombre} ${this.apellido}`;
+                return fullName;
+            }
+            addMascota(mascota){
+                this.mascotas.push(mascota)
+            }
+            getMascotas(){
+                return this.mascotas.length;
+            }
+            addBook(titulo, autor){
+                this.libros.push(new Libro(titulo, autor));
+            };
+            getBooks(){
+                var librosActuales = [];
+                this.libros.forEach(element => {
+                    librosActuales.push(element.titulo);
+                })
+                return librosActuales;
+            };
+        }
+        
+        let persona = new Usuario('Martin', 'Lubo', listadoLibros, listadoMascotas);
+
+        console.log(persona.getFullName()); 
+        console.log(persona.getMascotas());
+        persona.addMascota('loro');
+        console.log(persona.getMascotas());
+        console.log(persona.getBooks());
+        persona.addBook('El nombre del viento','Patrick Rothfuss');
+        console.log(persona.getBooks());
+
+
+        listadoLibros = [];
+        listadoMascotas = [];
+        let persona2 = new Usuario('Jose', 'Hernandez', listadoLibros, listadoMascotas)
+        console.log(persona2.getFullName()); 
+        console.log(persona2.getMascotas());
+        persona2.addMascota('loro');
+        console.log(persona2.getMascotas());
+        console.log(persona2.getBooks());
+        persona2.addBook('Los tres mosqueteros','Alexandre Dumas');
+        console.log(persona2.getBooks());
+    </script>
 </head>
 <body>
     
