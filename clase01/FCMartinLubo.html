@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        
+        var listadoLibros = [];
+        var listadoMascotas = ['Tortuga','Conejo'];
+
+        function libro(titulo, autor) {
+            this.titulo = titulo,
+            this.autor = autor;
+        };
+        
+
+        listadoLibros.push(new libro('Harry Potter','J. K. Rowling'));
+        listadoLibros.push(new libro('El Señor de los Anillos','J. R. R. Tolkien'));
+        listadoLibros.push(new libro('El Principito','Antoine de Saint-Exupery'));
+
+
+        function Usuario(nombre, apellido, libros, mascotas){
+
+            this.nombre = nombre
+            this.apellido = apellido
+            this.libros = libros
+            this.mascotas = mascotas
+
+            this.getFullName = function(){
+                var fullName = `${nombre} ${apellido}`;
+                return fullName;
+            }
+            this.addMascota = function(mascota){
+                mascotas.push(mascota)
+            }
+            this.getMascotas = function(){
+                return mascotas.length;
+            }
+            this.addBook = function (titulo, autor){
+                libros.push(new libro(titulo, autor));
+            };
+            this.getBooks = function(){
+                var librosActuales = [];
+                libros.forEach(element => {
+                    librosActuales.push(element.titulo);
+                })
+                return librosActuales;
+            };
+        }
+        
+        var persona = new Usuario('Martin', 'Lubo', listadoLibros, listadoMascotas);
+
+
+        console.log(persona.getFullName()); 
+        console.log(persona.getMascotas());
+        persona.addMascota('loro');
+        console.log(persona.getMascotas());
+        console.log(persona.getBooks());
+        persona.addBook('El nombre del viento','Patrick Rothfuss');
+        console.log(persona.getBooks());
+
+
+
+
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
