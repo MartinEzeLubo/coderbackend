@@ -8,19 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __asyncValues = (this && this.__asyncValues) || function (o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-};
 function timeout(seconds) {
-    let sec = 1;
-    if (seconds) {
-        sec = seconds;
-    }
-    return new Promise(resolve => setTimeout(resolve, sec * 1000));
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
 }
 function mostrarPalabras(word, t) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -29,33 +18,39 @@ function mostrarPalabras(word, t) {
     });
 }
 ;
-function displayText(text, time) {
-    var e_1, _a;
+function jobFinished(words) {
+    console.log(`Proceso completo. Se imprimieron ${words} palabras`);
+}
+function displayText(text, message, seconds) {
     return __awaiter(this, void 0, void 0, function* () {
-        let rawArray = text.split(/\b(\s+)/);
-        let cleanArray = [];
-        rawArray.forEach((e) => {
-            if (e !== ' ') {
-                cleanArray.push(e);
+        yield (() => {
+            let rawArray = text.split(/\b(\s+)/);
+            let cleanArray = [];
+            let count = 0;
+            let sec = 1;
+            if (seconds) {
+                sec = seconds;
             }
+            rawArray.forEach((e) => {
+                if (e !== ' ') {
+                    cleanArray.push(e);
+                    count++;
+                }
+            });
+            console.log(cleanArray);
+            for (let word of cleanArray) {
+                mostrarPalabras(word, sec);
+            }
+            message(cleanArray.length);
         });
-        try {
-            for (var cleanArray_1 = __asyncValues(cleanArray), cleanArray_1_1; cleanArray_1_1 = yield cleanArray_1.next(), !cleanArray_1_1.done;) {
-                let element = cleanArray_1_1.value;
-                yield timeout(time).then(e => {
-                    mostrarPalabras(element, time);
-                });
-            }
-        }
-        catch (e_1_1) { e_1 = { error: e_1_1 }; }
-        finally {
-            try {
-                if (cleanArray_1_1 && !cleanArray_1_1.done && (_a = cleanArray_1.return)) yield _a.call(cleanArray_1);
-            }
-            finally { if (e_1) throw e_1.error; }
-        }
     });
 }
 ;
-displayText('La concha de tu madre', 3);
-displayText('A la grande le puse cuca');
+function textos() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield displayText('La concha de tu madre', jobFinished, 3);
+        yield displayText('A la grande le puse cuca', jobFinished, 3);
+        yield displayText('A la grande le puse cuca la concha de tu madre', jobFinished, 3);
+    });
+}
+textos();
