@@ -11,44 +11,41 @@ function jobFinished(words:number){
 }
 
 async function displayText(text:String, message, seconds?:number){
-    await (()=>{
-        let rawArray = text.split(/\b(\s+)/);
-        let cleanArray:String[] = [];
-        let count:number = 0;
-        let sec= 1;
-        if (seconds){
-            sec = seconds;
+    let rawArray = text.split(' ');
+    let cleanArray:String[] = [];
+    let count:number = 0;
+    let sec= 1;
+    if (seconds){
+        sec = seconds;
+    }
+    rawArray.forEach((e) => {
+        if (e !== ' '){
+            cleanArray.push(e);
+            count++;
         }
+    })
     
-        rawArray.forEach((e) => {
-            if (e !== ' '){
-                cleanArray.push(e);
-                count++;
-            }
-        })
-        console.log(cleanArray);
-    
-        for (let word of cleanArray){
-            mostrarPalabras(word, sec);
-    
+    let run = async (e:String[]) => {
+        for (let i= 0; i< e.length; i++){
+            await mostrarPalabras(e[i], sec);
+
         }
-        message(cleanArray.length);
+   
+        
+        message(e.length);
+    }
 
-
-    });
-
+    await run(cleanArray);
     
 
-    
-    
+
 };
 
 async function textos(){
-    await displayText('La concha de tu madre', jobFinished, 3);
-    await displayText('A la grande le puse cuca', jobFinished, 3);
-    await displayText('A la grande le puse cuca la concha de tu madre', jobFinished, 3);
+    await displayText('Las leyes demasiado benignas rara vez son obedecidas las demasiado severas rara vez ejecutadas', jobFinished, 1);
+    await displayText('Nadie se nos montará encima si no doblamos la espalda.', jobFinished, 0.5);
+    await displayText('El brazo del universo moral es largo pero se dobla hacia la justicia', jobFinished);
 
 }
-
 
 textos();

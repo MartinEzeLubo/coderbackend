@@ -23,34 +23,34 @@ function jobFinished(words) {
 }
 function displayText(text, message, seconds) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (() => {
-            let rawArray = text.split(/\b(\s+)/);
-            let cleanArray = [];
-            let count = 0;
-            let sec = 1;
-            if (seconds) {
-                sec = seconds;
+        let rawArray = text.split(' ');
+        let cleanArray = [];
+        let count = 0;
+        let sec = 1;
+        if (seconds) {
+            sec = seconds;
+        }
+        rawArray.forEach((e) => {
+            if (e !== ' ') {
+                cleanArray.push(e);
+                count++;
             }
-            rawArray.forEach((e) => {
-                if (e !== ' ') {
-                    cleanArray.push(e);
-                    count++;
-                }
-            });
-            console.log(cleanArray);
-            for (let word of cleanArray) {
-                mostrarPalabras(word, sec);
-            }
-            message(cleanArray.length);
         });
+        let run = (e) => __awaiter(this, void 0, void 0, function* () {
+            for (let i = 0; i < e.length; i++) {
+                yield mostrarPalabras(e[i], sec);
+            }
+            message(e.length);
+        });
+        yield run(cleanArray);
     });
 }
 ;
 function textos() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield displayText('La concha de tu madre', jobFinished, 3);
-        yield displayText('A la grande le puse cuca', jobFinished, 3);
-        yield displayText('A la grande le puse cuca la concha de tu madre', jobFinished, 3);
+        yield displayText('Las leyes demasiado benignas rara vez son obedecidas las demasiado severas rara vez ejecutadas', jobFinished, 1);
+        yield displayText('Nadie se nos montará encima si no doblamos la espalda.', jobFinished, 0.5);
+        yield displayText('El brazo del universo moral es largo pero se dobla hacia la justicia', jobFinished);
     });
 }
 textos();
