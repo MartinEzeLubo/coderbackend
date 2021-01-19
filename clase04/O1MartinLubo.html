@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 04 - Entrega 1</title>
+</head>
+<body>
+    <h1>Ingrese un texto</h1>
+    <input type="text" name="" id="cuadrodetexto">
+    <label id="textoinvertido" for=""></label>
+</body>
+</html>
+    <script defer>
+    
+    let etiqueta;
+    let inputtext;
+    
+
+    function updateText(texto) {
+        let text = reverseText(texto);
+        etiqueta.innerText = text;
+        
+    }
+    function iniciar(){
+        etiqueta = document.getElementById("textoinvertido");
+        inputtext = document.getElementById("cuadrodetexto");
+        inputtext.addEventListener("keydown", ()=>updateText(inputtext.value), false)
+    };
+
+    document.addEventListener("DOMContentLoaded", iniciar(), false);
+    
+    
+    function reverseText(text){
+        return (text === '') ? '' : reverseText(text.substr(1)) + text.charAt(0);
+    }
+
+
+    </script>
+
+
