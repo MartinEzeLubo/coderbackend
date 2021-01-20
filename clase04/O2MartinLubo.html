@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 04 - Entrega 1</title>
+</head>
+<body>
+    <h1>Ingrese un texto</h1>
+    <input type="text" name="" id="cuadrodetexto">
+    <label id="textoinvertido" for=""></label>
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
+<script defer>
+
+    const {Observable, fromEvent} = rxjs;
+    let etiqueta;
+    let inputtext;
+    let subscripcion;
+
+    function iniciar(){
+        etiqueta = document.getElementById("textoinvertido");
+        inputtext = document.getElementById("cuadrodetexto");
+        writeDetection = fromEvent(document.getElementById("cuadrodetexto"), "keyup");
+       
+    };
+    
+    document.addEventListener("DOMContentLoaded", iniciar(), false);
+    
+    
+    function reverseText(text){
+        return (text === '') ? '' : reverseText(text.substr(1)) + text.charAt(0);
+    }
+    function clean(){
+        inputtext.disabled = true;
+        inputtext.value = '';
+        etiqueta.innerText = '';
+    }
+    function checkText(input){
+        
+        setTimeout(()=>{
+            subscripcion.unsubscribe(); 
+            console.log('Time Out');
+            clean();
+        },30000);
+        
+        return new Observable(subscriptor =>{
+            subscripcion = writeDetection.subscribe({
+                next: (e) => {
+                    if (inputtext.value === 'error'){
+                        subscripcion.unsubscribe();
+                        subscriptor.error('Error del observable')
+                    } else if (inputtext.value === 'complete'){
+                        subscripcion.unsubscribe();
+                        subscriptor.complete();
+
+                    } else {
+                    
+                    etiqueta.innerText = subscripcion.pipe(map(reverseText(inputtext.value)))
+                    subscriptor.next();
+                    }
+                }
+            });
+        })
+    };
+    
+
+    let ejecucion = checkText(inputtext).subscribe({
+            next: () => {},
+            complete: ()=> {console.log('Proceso completado'), clean();},
+            error: (e) => {console.log(e), clean();}
+    })
+    
+    // etiqueta.innerText = reverseText(inputtext.value),
+
+    </script>
+
