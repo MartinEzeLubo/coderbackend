@@ -14,7 +14,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
 <script defer>
 
-    const {Observable} = rxjs;
+    const {Observable, fromEvent} = rxjs;
     let update;
     let etiqueta;
     let inputtext;
@@ -22,14 +22,10 @@
     
     
 
-    function updateText(texto) {
-        let text = reverseText(texto);
-        etiqueta.innerText = text;
-        
-    }
     function iniciar(){
         etiqueta = document.getElementById("textoinvertido");
         inputtext = document.getElementById("cuadrodetexto");
+        writeDetection = fromEvent(document.getElementById("cuadrodetexto"), "keyup");
         
     };
     
@@ -40,20 +36,40 @@
         return (text === '') ? '' : reverseText(text.substr(1)) + text.charAt(0);
     }
     
-    function subscribible(){
-        return new Observable(suscriber => {
-            setInterval(()=> {
-                suscriber.next(reverseText(inputtext.value));
-            },500)
-        })
+    
+    let subscripcion = writeDetection.subscribe({
+        next: (e) => {
+            etiqueta.innerText = reverseText(inputtext.value);
+        }
+    })
+    
+    setTimeout(()=>{
+        subscripcion.unsubscribe(); 
+        console.log('Time Out');
+    },30000);
+    
 
-    }
 
-    let suscripcion = subscribible().subscribe((data) => {
-        console.log(data);
-        etiqueta.innerText = data;
-        setTimeout(suscripcion.unsubscribe(), 30000)
-    }); 
+
+    // function updateText(texto) {
+    //     let text = reverseText(texto);
+    //     etiqueta.innerText = text;
+        
+    // }
+    // function subscribible(){
+    //     return new Observable(suscriber => {
+    //         setInterval(()=> {
+    //             suscriber.next(reverseText(inputtext.value));
+    //         },500)
+    //     })
+
+    // }
+
+    // let suscripcion = subscribible().subscribe((data) => {
+    //     console.log(data);
+    //     etiqueta.innerText = data;
+    //     setTimeout(suscripcion.unsubscribe(), 30000)
+    // }); 
     
     
 
