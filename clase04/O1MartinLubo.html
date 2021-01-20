@@ -11,10 +11,15 @@
     <label id="textoinvertido" for=""></label>
 </body>
 </html>
-    <script defer>
-    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
+<script defer>
+
+    const {Observable} = rxjs;
+    let update;
     let etiqueta;
     let inputtext;
+
+    
     
 
     function updateText(texto) {
@@ -25,16 +30,32 @@
     function iniciar(){
         etiqueta = document.getElementById("textoinvertido");
         inputtext = document.getElementById("cuadrodetexto");
-        inputtext.addEventListener("keydown", ()=>updateText(inputtext.value), false)
+        
     };
-
+    
     document.addEventListener("DOMContentLoaded", iniciar(), false);
     
     
     function reverseText(text){
         return (text === '') ? '' : reverseText(text.substr(1)) + text.charAt(0);
     }
+    
+    function subscribible(){
+        return new Observable(suscriber => {
+            setInterval(()=> {
+                suscriber.next(reverseText(inputtext.value));
+            },500)
+        })
 
+    }
+
+    let suscripcion = subscribible().subscribe((data) => {
+        console.log(data);
+        etiqueta.innerText = data;
+        setTimeout(suscripcion.unsubscribe(), 30000)
+    }); 
+    
+    
 
     </script>
 
