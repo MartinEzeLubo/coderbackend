@@ -1,0 +1,27 @@
+[
+ {
+  "title": "sarasa",
+  "price": 155.56,
+  "thumbnail": "https://sarasa.com.ar"
+ },
+ {
+  "title": "sarasa",
+  "price": 155.56,
+  "thumbnail": "https://sarasa.com.ar"
+ },
+ {
+  "title": "sarasa",
+  "price": 155.56,
+  "thumbnail": "https://sarasa.com.ar"
+ },
+ {
+  "title": "sarasa",
+  "price": 155.56,
+  "thumbnail": "https://sarasa.com.ar"
+ },
+ {
+  "title": "sarasa",
+  "price": 155.56,
+  "thumbnail": "https://sarasa.com.ar"
+ }
+]

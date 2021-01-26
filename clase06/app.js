@@ -48,7 +48,7 @@ var Archivo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, fs.promises.writeFile("./files/" + this.fileName + ".txt", '', { flag: 'a' })];
+                        return [4 /*yield*/, fs.promises.writeFile("./files/" + this.fileName + ".txt", '[\n]')];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 3];
@@ -71,8 +71,6 @@ var Archivo = /** @class */ (function () {
                         return [4 /*yield*/, fs.promises.readFile("./files/" + this.fileName + ".txt", 'utf-8')];
                     case 1:
                         contenido = _a.sent();
-                        contenido = JSON.parse(contenido);
-                        console.log(contenido);
                         return [3 /*break*/, 3];
                     case 2:
                         err_2 = _a.sent();
@@ -85,18 +83,25 @@ var Archivo = /** @class */ (function () {
     };
     Archivo.prototype.guardar = function (newTitle, newPrice, newUrl) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, product, err_3;
+            var info, data, id, product, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        product = { title: newTitle,
-                            price: newPrice,
-                            thumbnail: newUrl
-                        };
-                        _a.label = 1;
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, fs.promises.readFile("./files/" + this.fileName + ".txt", 'utf-8')];
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, fs.promises.writeFile("./files/" + this.fileName + ".txt", JSON.stringify(product), { flag: 'a' })];
+                        data = _a.sent();
+                        info = JSON.parse(data);
+                        console.log('first try');
+                        id = void 0;
+                        product = { 'title': newTitle,
+                            'price': newPrice,
+                            'thumbnail': newUrl
+                        };
+                        console.log(info);
+                        info.push(product);
+                        console.log(info);
+                        return [4 /*yield*/, fs.promises.writeFile("./files/" + this.fileName + ".txt", JSON.stringify(info, null, 1))];
                     case 2:
                         _a.sent();
                         return [3 /*break*/, 4];
@@ -119,5 +124,29 @@ var Archivo = /** @class */ (function () {
     return Archivo;
 }());
 var archivo = new Archivo('test');
-//archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
-archivo.leer();
+function ejecutar() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                case 2:
+                    _a.sent();
+                    return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                case 4:
+                    _a.sent();
+                    return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                case 5:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+ejecutar();
+// archivo.leer();

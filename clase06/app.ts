@@ -5,18 +5,17 @@ const fs = require('fs');
 
 class Archivo{
 
-    fileName: String;
+    fileName: string;
     contador = 0;
 
-    constructor(name: String){
+    constructor(name: string){
         this.fileName = name;
         this.crearArchivo(this.fileName);
     }
-    async crearArchivo(name: String){
-
-        let data:[] =[]
+    async crearArchivo(name: string){
+        
         try{
-            await fs.promises.writeFile(`./files/${this.fileName}.txt`, JSON.stringify(data) ,{flag: 'a'})
+            await fs.promises.writeFile(`./files/${this.fileName}.txt`, '[\n]')
 
         } catch (err) {
             console.log(err);
@@ -26,22 +25,31 @@ class Archivo{
     async leer() {
         try{
             let contenido = await fs.promises.readFile(`./files/${this.fileName}.txt`, 'utf-8');
-            contenido = JSON.parse(contenido);
-            console.log(contenido);
+            // contenido = JSON.parse(contenido);
         } catch (err) {
             console.log(err);
         }
     }
 
-    async guardar(newTitle: String, newPrice: Number, newUrl: String){
-        let id:Number;
-        let product = {title:  newTitle, 
-                        price: newPrice,
-                        thumbnail: newUrl
-                    }
+    async guardar(newTitle: string, newPrice: number, newUrl: string){
+        let info;
 
         try{
-            await fs.promises.writeFile(`./files/${this.fileName}.txt`, JSON.stringify(product),{flag: 'a'})
+            let data = await fs.promises.readFile(`./files/${this.fileName}.txt`, 'utf-8');
+            
+            info = JSON.parse(data);
+            console.log('first try');                        
+            let id:Number;
+            let product = {'title':  newTitle,
+                            'price': newPrice,
+                            'thumbnail': newUrl,
+            };
+            console.log(info);
+            info.push(product);
+            console.log(info);
+            
+            await fs.promises.writeFile(`./files/${this.fileName}.txt`, JSON.stringify(info, null, 1));
+
 
         } catch (err) {
             console.log(err);
@@ -60,5 +68,15 @@ class Archivo{
 
 let archivo = new Archivo('test');
 
-archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
+async function ejecutar() {
+    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
+    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
+    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
+    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
+    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
+
+}
+
+ejecutar();
+
 // archivo.leer();
