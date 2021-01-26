@@ -2,7 +2,6 @@ const fs = require('fs');
 
 
 
-
 class Archivo{
 
     fileName: string;
@@ -12,10 +11,10 @@ class Archivo{
         this.fileName = name;
         this.crearArchivo(this.fileName);
     }
-    async crearArchivo(name: string){
+    private async crearArchivo(name: string){
         
         try{
-            await fs.promises.writeFile(`./files/${this.fileName}.txt`, '[\n]')
+            await fs.promises.writeFile(`./${this.fileName}.txt`, '[\n]')
 
         } catch (err) {
             console.log(err);
@@ -24,8 +23,8 @@ class Archivo{
 
     async leer() {
         try{
-            let contenido = await fs.promises.readFile(`./files/${this.fileName}.txt`, 'utf-8');
-            // contenido = JSON.parse(contenido);
+            let contenido = await fs.promises.readFile(`./${this.fileName}.txt`, 'utf-8');
+            console.log(contenido);
         } catch (err) {
             console.log(err);
         }
@@ -33,22 +32,20 @@ class Archivo{
 
     async guardar(newTitle: string, newPrice: number, newUrl: string){
         let info;
-
         try{
-            let data = await fs.promises.readFile(`./files/${this.fileName}.txt`, 'utf-8');
+            let data = await fs.promises.readFile(`./${this.fileName}.txt`, 'utf-8');
             
             info = JSON.parse(data);
-            console.log('first try');                        
-            let id:Number;
+            let id:Number = info.length+1;
+            
             let product = {'title':  newTitle,
                             'price': newPrice,
                             'thumbnail': newUrl,
+                            'id': id,
             };
-            console.log(info);
             info.push(product);
-            console.log(info);
             
-            await fs.promises.writeFile(`./files/${this.fileName}.txt`, JSON.stringify(info, null, 1));
+            await fs.promises.writeFile(`./${this.fileName}.txt`, JSON.stringify(info, null, 4));
 
 
         } catch (err) {
@@ -57,26 +54,29 @@ class Archivo{
     }
 
     async borrar(){
-
-
+        fs.unlink(`./${this.fileName}.txt`, (error: Error)=> {
+            if (error) throw error;
+        })
     }
 
-    
 }
 
 
 
-let archivo = new Archivo('test');
+let archivo = new Archivo('productos');
 
 async function ejecutar() {
-    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
-    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
-    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
-    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
-    await archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar');
+    await archivo.guardar('Forerunner 35', 23999.00, 'https://garmin.com.ar/Image/0/700_700-010-01689-03_1.jpg');
+    await archivo.guardar('Forerunner 45', 29999.00, 'https://garmin.com.ar/Image/0/700_700-010-02156-01_1.jpg');
+    await archivo.guardar('Forerunner 235', 34999.00, 'https://garmin.com.ar/Image/0/700_700-010-03717-54_1.jpg');
+    await archivo.guardar('Forerunner 745', 67999.00, 'https://garmin.com.ar/Image/0/700_700-010-02445-13_1.jpg');
+    
+    await archivo.leer();
 
+    console.log('El archivo estara disponible durante 30 segundos');
+    setTimeout( ()=> {archivo.borrar(); console.log('Archivo Eliminado');}, 30000);
+    
 }
 
 ejecutar();
 
-// archivo.leer();

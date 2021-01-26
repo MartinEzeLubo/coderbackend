@@ -48,7 +48,7 @@ var Archivo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, fs.promises.writeFile("./files/" + this.fileName + ".txt", '[\n]')];
+                        return [4 /*yield*/, fs.promises.writeFile("./" + this.fileName + ".txt", '[\n]')];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 3];
@@ -68,9 +68,10 @@ var Archivo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, fs.promises.readFile("./files/" + this.fileName + ".txt", 'utf-8')];
+                        return [4 /*yield*/, fs.promises.readFile("./" + this.fileName + ".txt", 'utf-8')];
                     case 1:
                         contenido = _a.sent();
+                        console.log(contenido);
                         return [3 /*break*/, 3];
                     case 2:
                         err_2 = _a.sent();
@@ -88,20 +89,18 @@ var Archivo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, fs.promises.readFile("./files/" + this.fileName + ".txt", 'utf-8')];
+                        return [4 /*yield*/, fs.promises.readFile("./" + this.fileName + ".txt", 'utf-8')];
                     case 1:
                         data = _a.sent();
                         info = JSON.parse(data);
-                        console.log('first try');
-                        id = void 0;
+                        id = info.length + 1;
                         product = { 'title': newTitle,
                             'price': newPrice,
-                            'thumbnail': newUrl
+                            'thumbnail': newUrl,
+                            'id': id
                         };
-                        console.log(info);
                         info.push(product);
-                        console.log(info);
-                        return [4 /*yield*/, fs.promises.writeFile("./files/" + this.fileName + ".txt", JSON.stringify(info, null, 1))];
+                        return [4 /*yield*/, fs.promises.writeFile("./" + this.fileName + ".txt", JSON.stringify(info, null, 4))];
                     case 2:
                         _a.sent();
                         return [3 /*break*/, 4];
@@ -117,36 +116,41 @@ var Archivo = /** @class */ (function () {
     Archivo.prototype.borrar = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
+                fs.unlink("./" + this.fileName + ".txt", function (error) {
+                    if (error)
+                        throw error;
+                });
                 return [2 /*return*/];
             });
         });
     };
     return Archivo;
 }());
-var archivo = new Archivo('test');
+var archivo = new Archivo('productos');
 function ejecutar() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                case 0: return [4 /*yield*/, archivo.guardar('Forerunner 35', 23999.00, 'https://garmin.com.ar/Image/0/700_700-010-01689-03_1.jpg')];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                    return [4 /*yield*/, archivo.guardar('Forerunner 45', 29999.00, 'https://garmin.com.ar/Image/0/700_700-010-02156-01_1.jpg')];
                 case 2:
                     _a.sent();
-                    return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                    return [4 /*yield*/, archivo.guardar('Forerunner 235', 34999.00, 'https://garmin.com.ar/Image/0/700_700-010-03717-54_1.jpg')];
                 case 3:
                     _a.sent();
-                    return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                    return [4 /*yield*/, archivo.guardar('Forerunner 745', 67999.00, 'https://garmin.com.ar/Image/0/700_700-010-02445-13_1.jpg')];
                 case 4:
                     _a.sent();
-                    return [4 /*yield*/, archivo.guardar('sarasa', 155.56, 'https://sarasa.com.ar')];
+                    return [4 /*yield*/, archivo.leer()];
                 case 5:
                     _a.sent();
+                    console.log('El archivo estara disponible durante 30 segundos');
+                    setTimeout(function () { archivo.borrar(); console.log('Archivo Eliminado'); }, 30000);
                     return [2 /*return*/];
             }
         });
     });
 }
 ejecutar();
-// archivo.leer();
