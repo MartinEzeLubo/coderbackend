@@ -1,8 +1,12 @@
 const express = require("express");
 const app = express();
 
+const visitas = 0;
+
 
 app.use(express.static("public"));
+
+    
 
 function dataGenerator(){
   let idValue = Math.floor(Math.random() * (11 - 1)) + 1;
