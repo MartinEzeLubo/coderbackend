@@ -1,34 +1,11 @@
+import { errorMonitor } from 'events';
 import express from 'express';
-import { title } from 'process';
-import {Archivo} from './archivos/archivos';
+import {readDataFile, writeDataFile} from './archivos/readWriteFiles';
 
 const app = express();
 const port = 8080;
-const dataSource = new Archivo('productos');
 
-
-
-async function readDataFile(){
-  try {
-    let data = await dataSource.leer();
-    return data;
-    
-  } catch(err){
-    console.log(err);
-  }
-}
-
-async function writeDataFile(title: string, price: number, thumbnail: string){
-  let data;
-  try {
-    data = await dataSource.guardar(title, price, thumbnail)
-        
-
-  } catch (error) {
-    console.log(error);
-  }
-  return data;
-}
+app.use(express.json());
 
 
 app.get('/', (req, res) => {
@@ -37,35 +14,44 @@ app.get('/', (req, res) => {
 
 
 
-app.get('/api/productos/listar', (req, res) => {
-    let products;
-  readDataFile().then(info => {
-    products = JSON.parse(info);
-    res.json(products);
-  });
-});
-
-
-app.get('/api/productos/listar/:id', (req, res) => {
+app.get('/api/productos', async (req, res) => {
   
-  let id = req.params.id;
-  let product;
-  readDataFile().then(info => {
-    product = JSON.parse(info);
-    res.json({'items': product[id]});
-  });
+  let products = await readDataFile();
+  res.json(products);
+
 });
 
-app.post('/api/productos/guardar/:title&:price&:thumbnail', async (req, res) => {
+
+app.get('/api/productos/:id', async (req, res) => {
   
   try {
+    let products = await readDataFile();
+    let product = products.find(element => element.id === parseInt(req.params.id));
+    if (!product){
+      res.status(404).json({error: 'Producto no encontrado'})
+    }
+    res.json({'item': product});
     
-    let data = await writeDataFile(req.params.title, parseInt(req.params.price), req.params.thumbnail);
-    console.log(data);
+  } catch (error) {
+    res.status(500).send('Error de la aplicacion' + error);
+
+  }
+    
+  
+});
+
+app.post('/api/productos/', async (req, res) => {
+  
+  if(!req.body.title || !req.body.price || !req.body.thumbnail){
+    res.status(400).send('Los parametros enviados son incorrectos');
+  }
+  try {
+  
+    let data = await writeDataFile(req.body.title, parseInt(req.body.price), req.body.thumbnail);
     res.json(data)
     
   } catch (error) {
-    
+    res.status(500).send('Error de la aplicacion' + error);
   }
   
   
@@ -76,4 +62,4 @@ app.post('/api/productos/guardar/:title&:price&:thumbnail', async (req, res) => 
 app.listen(port, () => {
   
   return console.log(`Servidor listo en puerto ${port}`);
-});
+}).on('error', ()=>console.log('El puerto configurado se encuentra en uso'));

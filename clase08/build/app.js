@@ -13,61 +13,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const archivos_1 = require("./archivos/archivos");
+const readWriteFiles_1 = require("./archivos/readWriteFiles");
 const app = express_1.default();
 const port = 8080;
-const dataSource = new archivos_1.Archivo('productos');
-function readDataFile() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            let data = yield dataSource.leer();
-            return data;
-        }
-        catch (err) {
-            console.log(err);
-        }
-    });
-}
-function writeDataFile(title, price, thumbnail) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let data;
-        try {
-            data = yield dataSource.guardar(title, price, thumbnail);
-        }
-        catch (error) {
-            console.log(error);
-        }
-        return data;
-    });
-}
+app.use(express_1.default.json());
 app.get('/', (req, res) => {
     res.send('Clase 08 Coderhouse Backend');
 });
-app.get('/api/productos/listar', (req, res) => {
-    let products;
-    readDataFile().then(info => {
-        products = JSON.parse(info);
-        res.json(products);
-    });
-});
-app.get('/api/productos/listar/:id', (req, res) => {
-    let id = req.params.id;
-    let product;
-    readDataFile().then(info => {
-        product = JSON.parse(info);
-        res.json({ 'items': product[id] });
-    });
-});
-app.post('/api/productos/guardar/:title&:price&:thumbnail', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get('/api/productos', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let products = yield readWriteFiles_1.readDataFile();
+    res.json(products);
+}));
+app.get('/api/productos/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let data = yield writeDataFile(req.params.title, parseInt(req.params.price), req.params.thumbnail);
-        console.log(data);
+        let products = yield readWriteFiles_1.readDataFile();
+        let product = products.find(element => element.id === parseInt(req.params.id));
+        if (!product) {
+            res.status(404).json({ error: 'Producto no encontrado' });
+        }
+        res.json({ 'item': product });
+    }
+    catch (error) {
+        res.status(500).send('Error de la aplicacion' + error);
+    }
+}));
+app.post('/api/productos/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.body.title || !req.body.price || !req.body.thumbnail) {
+        res.status(400).send('Los parametros enviados son incorrectos');
+    }
+    try {
+        let data = yield readWriteFiles_1.writeDataFile(req.body.title, parseInt(req.body.price), req.body.thumbnail);
         res.json(data);
     }
     catch (error) {
+        res.status(500).send('Error de la aplicacion' + error);
     }
 }));
 app.listen(port, () => {
     return console.log(`Servidor listo en puerto ${port}`);
-});
+}).on('error', () => console.log('El puerto configurado se encuentra en uso'));
 //# sourceMappingURL=app.js.map

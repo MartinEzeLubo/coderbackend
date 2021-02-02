@@ -14,7 +14,7 @@ export class Archivo{
     async leer() {
         try{
             let contenido = await fs.promises.readFile(`./src/archivos/${this.fileName}.txt`, 'utf-8');
-            return contenido;
+            return JSON.parse(contenido);
         } catch (err) {
             console.log(err);
         }
@@ -42,7 +42,7 @@ export class Archivo{
             
 
         } catch (err) {
-            console.log(err);
+            return err;
         }
     }
 

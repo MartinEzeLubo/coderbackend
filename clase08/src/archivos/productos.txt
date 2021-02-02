@@ -58,11 +58,5 @@
         "price": "$254.38",
         "thumbnail": "http://dummyimage.com/169x151.jpg/5fa2dd/ffffff",
         "id": 10
-    },
-    {
-        "title": "sarasa",
-        "price": 28839,
-        "thumbnail": "www.sarasa.com",
-        "id": 11
     }
 ]

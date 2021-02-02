@@ -20,7 +20,7 @@ class Archivo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let contenido = yield fs.promises.readFile(`./src/archivos/${this.fileName}.txt`, 'utf-8');
-                return contenido;
+                return JSON.parse(contenido);
             }
             catch (err) {
                 console.log(err);
@@ -44,7 +44,7 @@ class Archivo {
                 return product;
             }
             catch (err) {
-                console.log(err);
+                return err;
             }
         });
     }
