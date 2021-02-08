@@ -17,6 +17,7 @@ const readWriteFiles_1 = require("./archivos/readWriteFiles");
 const port = 8080;
 const app = express_1.default();
 const router = express_1.default.Router();
+app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.use(express_1.default.static(__dirname + '/public'));
 router.get('/', (req, res) => {
@@ -36,31 +37,35 @@ router.get('/productos/:id', (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.json({ 'item': product });
     }
     catch (error) {
-        res.status(500).send('Error de la aplicacion' + error);
+        res.send('Error de la aplicacion' + error).status(500);
     }
 }));
 router.post('/productos/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.body.title || !req.body.price || !req.body.thumbnail) {
+    if ((!req.body.title || req.body.title === "" || req.body.price === null || req.body.price === undefined || !req.body.thumbnail || req.body.thumbnail === "")) {
         res.status(400).send('Los parametros enviados son incorrectos');
     }
-    try {
-        let data = yield readWriteFiles_1.writeDataFile(req.body.title, parseInt(req.body.price), req.body.thumbnail);
-        res.json(data);
-    }
-    catch (error) {
-        res.status(500).send('Error de la aplicacion' + error);
+    else {
+        try {
+            let data = yield readWriteFiles_1.writeDataFile(req.body.title, parseInt(req.body.price), req.body.thumbnail);
+            res.json(data);
+        }
+        catch (error) {
+            res.status(500).send('Error de la aplicacion' + error);
+        }
     }
 }));
 router.put('/productos/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.body.id || !req.body.title || !req.body.price || !req.body.thumbnail) {
+    if ((!req.body.id || req.body.id === null || !req.body.title || req.body.title === "" || req.body.price === null || req.body.price === undefined || !req.body.thumbnail || req.body.thumbnail === "")) {
         res.status(400).send('Los parametros enviados son incorrectos');
     }
-    try {
-        let data = yield readWriteFiles_1.updateDataFile(parseInt(req.body.id), req.body.title, parseInt(req.body.price), req.body.thumbnail);
-        res.json(data);
-    }
-    catch (error) {
-        res.status(500).send('Error de la aplicacion' + error);
+    else {
+        try {
+            let data = yield readWriteFiles_1.updateDataFile(parseInt(req.body.id), req.body.title, parseInt(req.body.price), req.body.thumbnail);
+            res.json(data);
+        }
+        catch (error) {
+            res.send('Error de la aplicacion').status(500);
+        }
     }
 }));
 router.delete('/productos/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,11 +75,13 @@ router.delete('/productos/:id', (req, res) => __awaiter(void 0, void 0, void 0, 
         if (!product) {
             res.status(404).json({ error: 'Producto no encontrado' });
         }
-        let eliminar = yield readWriteFiles_1.deleteItem(parseInt(req.params.id));
-        res.status(200).json(eliminar);
+        else {
+            let eliminar = yield readWriteFiles_1.deleteItem(parseInt(req.params.id));
+            res.status(200).json(eliminar);
+        }
     }
     catch (error) {
-        res.status(500).send('Error de la aplicacion' + error);
+        res.send('Error de la aplicacion' + error).status(500);
     }
 }));
 app.get('/', (req, res) => {

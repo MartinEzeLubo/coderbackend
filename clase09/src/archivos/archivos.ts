@@ -1,5 +1,3 @@
-import e from "express";
-
 const fs = require('fs');
 
 
@@ -15,7 +13,7 @@ export class Archivo{
   
     async read() {
         try{
-            let contenido = await fs.promises.readFile(`./build/archivos/${this.fileName}.txt`, 'utf-8');
+            let contenido = await fs.promises.readFile(`${__dirname}/${this.fileName}.txt`, 'utf-8');
             return JSON.parse(contenido);
         } catch (err) {
             console.log(err);
@@ -25,7 +23,7 @@ export class Archivo{
     async save(newTitle: string, newPrice: number, newUrl: string){
         let info;
         try{
-            let data = await fs.promises.readFile(`./build/archivos/${this.fileName}.txt`, 'utf-8');
+            let data = await fs.promises.readFile(`${__dirname}/${this.fileName}.txt`, 'utf-8');
             
             info = JSON.parse(data);
             let id:Number = info.length+1;
@@ -37,14 +35,15 @@ export class Archivo{
             };
             info.push(product);
             
-            await fs.promises.writeFile(`./build/archivos/${this.fileName}.txt`, JSON.stringify(info, null, 4));
+            await fs.promises.writeFile(`${__dirname}/${this.fileName}.txt`, JSON.stringify(info, null, 4));
 
             
             return product;
             
 
         } catch (err) {
-            throw err;
+            console.log(err);
+            return err;
         }
     }
 
@@ -53,7 +52,7 @@ export class Archivo{
         let posPrdEncontrado;
 
         try{
-            let data = await fs.promises.readFile(`./build/archivos/${this.fileName}.txt`, 'utf-8');
+            let data = await fs.promises.readFile(`${__dirname}/${this.fileName}.txt`, 'utf-8');
             
             productos = JSON.parse(data);
 
@@ -67,7 +66,7 @@ export class Archivo{
                 }
             }
 
-            await fs.promises.writeFile(`./build/archivos/${this.fileName}.txt`, JSON.stringify(productos, null, 4));
+            await fs.promises.writeFile(`${__dirname}/${this.fileName}.txt`, JSON.stringify(productos, null, 4));
 
             return productos[posPrdEncontrado];
 
@@ -82,7 +81,7 @@ export class Archivo{
         let productos;
 
         try{
-            let data = await fs.promises.readFile(`./build/archivos/${this.fileName}.txt`, 'utf-8');
+            let data = await fs.promises.readFile(`${__dirname}/${this.fileName}.txt`, 'utf-8');
             
             productos = JSON.parse(data);
 
@@ -91,7 +90,7 @@ export class Archivo{
             for (let i = id-1; i<productos.length; i++){
                 productos[i].id--;
             }
-            await fs.promises.writeFile(`./build/archivos/${this.fileName}.txt`, JSON.stringify(productos, null, 4));
+            await fs.promises.writeFile(`${__dirname}/${this.fileName}.txt`, JSON.stringify(productos, null, 4));
 
             return prdEliminado;
 
@@ -104,7 +103,7 @@ export class Archivo{
     }
 
     async borrarArchivo(){
-        fs.unlink(`./build/archivos/${this.fileName}.txt`, (error: Error)=> {
+        fs.unlink(`${__dirname}/${this.fileName}.txt`, (error: Error)=> {
             if (error) throw error;
         })
     }

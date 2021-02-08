@@ -8,7 +8,7 @@ async function readDataFile(){
       return data;
       
     } catch(err){
-      console.log(err);
+      return err;
     }
   }
   
@@ -18,8 +18,8 @@ async function writeDataFile(title: string, price: number, thumbnail: string){
       data = await dataSource.save(title, price, thumbnail)
           
   
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      return err;
     }
     return data;
 }
@@ -29,8 +29,8 @@ async function updateDataFile(id: number, title: string, price: number, thumbnai
     try {
       data = await dataSource.update(id, title, price, thumbnail);
   
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      return err;
     }
     return data;
 }
@@ -39,8 +39,8 @@ async function deleteItem(id: number){
     try {
       data = await dataSource.delete(id);
   
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      return err;
     }
     return data;
 }

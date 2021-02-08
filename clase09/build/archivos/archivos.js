@@ -19,7 +19,7 @@ class Archivo {
     read() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let contenido = yield fs.promises.readFile(`./build/archivos/${this.fileName}.txt`, 'utf-8');
+                let contenido = yield fs.promises.readFile(`${__dirname}/${this.fileName}.txt`, 'utf-8');
                 return JSON.parse(contenido);
             }
             catch (err) {
@@ -31,7 +31,7 @@ class Archivo {
         return __awaiter(this, void 0, void 0, function* () {
             let info;
             try {
-                let data = yield fs.promises.readFile(`./build/archivos/${this.fileName}.txt`, 'utf-8');
+                let data = yield fs.promises.readFile(`${__dirname}/${this.fileName}.txt`, 'utf-8');
                 info = JSON.parse(data);
                 let id = info.length + 1;
                 let product = { 'title': newTitle,
@@ -40,11 +40,12 @@ class Archivo {
                     'id': id,
                 };
                 info.push(product);
-                yield fs.promises.writeFile(`./build/archivos/${this.fileName}.txt`, JSON.stringify(info, null, 4));
+                yield fs.promises.writeFile(`${__dirname}/${this.fileName}.txt`, JSON.stringify(info, null, 4));
                 return product;
             }
             catch (err) {
-                throw err;
+                console.log(err);
+                return err;
             }
         });
     }
@@ -53,7 +54,7 @@ class Archivo {
             let productos;
             let posPrdEncontrado;
             try {
-                let data = yield fs.promises.readFile(`./build/archivos/${this.fileName}.txt`, 'utf-8');
+                let data = yield fs.promises.readFile(`${__dirname}/${this.fileName}.txt`, 'utf-8');
                 productos = JSON.parse(data);
                 for (let i = 0; i < productos.length; i++) {
                     if (productos[i].id === id) {
@@ -64,7 +65,7 @@ class Archivo {
                         break;
                     }
                 }
-                yield fs.promises.writeFile(`./build/archivos/${this.fileName}.txt`, JSON.stringify(productos, null, 4));
+                yield fs.promises.writeFile(`${__dirname}/${this.fileName}.txt`, JSON.stringify(productos, null, 4));
                 return productos[posPrdEncontrado];
             }
             catch (err) {
@@ -76,13 +77,13 @@ class Archivo {
         return __awaiter(this, void 0, void 0, function* () {
             let productos;
             try {
-                let data = yield fs.promises.readFile(`./build/archivos/${this.fileName}.txt`, 'utf-8');
+                let data = yield fs.promises.readFile(`${__dirname}/${this.fileName}.txt`, 'utf-8');
                 productos = JSON.parse(data);
                 let prdEliminado = productos.splice(id - 1, 1);
                 for (let i = id - 1; i < productos.length; i++) {
                     productos[i].id--;
                 }
-                yield fs.promises.writeFile(`./build/archivos/${this.fileName}.txt`, JSON.stringify(productos, null, 4));
+                yield fs.promises.writeFile(`${__dirname}/${this.fileName}.txt`, JSON.stringify(productos, null, 4));
                 return prdEliminado;
             }
             catch (err) {
@@ -92,7 +93,7 @@ class Archivo {
     }
     borrarArchivo() {
         return __awaiter(this, void 0, void 0, function* () {
-            fs.unlink(`./build/archivos/${this.fileName}.txt`, (error) => {
+            fs.unlink(`${__dirname}/${this.fileName}.txt`, (error) => {
                 if (error)
                     throw error;
             });

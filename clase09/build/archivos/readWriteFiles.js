@@ -19,7 +19,7 @@ function readDataFile() {
             return data;
         }
         catch (err) {
-            console.log(err);
+            return err;
         }
     });
 }
@@ -30,8 +30,8 @@ function writeDataFile(title, price, thumbnail) {
         try {
             data = yield dataSource.save(title, price, thumbnail);
         }
-        catch (error) {
-            console.log(error);
+        catch (err) {
+            return err;
         }
         return data;
     });
@@ -43,8 +43,8 @@ function updateDataFile(id, title, price, thumbnail) {
         try {
             data = yield dataSource.update(id, title, price, thumbnail);
         }
-        catch (error) {
-            console.log(error);
+        catch (err) {
+            return err;
         }
         return data;
     });
@@ -56,8 +56,8 @@ function deleteItem(id) {
         try {
             data = yield dataSource.delete(id);
         }
-        catch (error) {
-            console.log(error);
+        catch (err) {
+            return err;
         }
         return data;
     });
