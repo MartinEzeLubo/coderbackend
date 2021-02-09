@@ -1,3 +1,15 @@
+**Documentacion URLs**
+
+* **URL**
+    http://localhost:8080/api/productos/vista
+* **Respuesta:**
+    Muestra el listado de productos guardados
+
+* **URL**
+    http://localhost:8080/api/productos/alta
+* **Respuesta:**
+    Muestra el formulario de alta de productos
+
 **Documentacion API**
 ----
   
@@ -77,8 +89,14 @@
    `id=[integer]`
 
 * **Success Response:**
-    Devuelve el objeto actualizado en formato JSON
- 
+   
+    * **Code:** 200 <br />
+    **Content:** `{ id : 9 ,
+                    title: 'Reloj con GPS',
+                    price: 10000,
+                    thumbnail: 'https://urlalaimagenquecorresponde.com.ar/imagen.jpg'
+                    },
+                    ` 
 * **Error Response:**
 
 
