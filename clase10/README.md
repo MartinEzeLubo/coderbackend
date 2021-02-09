@@ -1,22 +1,3 @@
-# Explicacion de URLs
-
-hay algunas URLs para la API y otras para la interface web
-
-## API URLs 
-
-## 
-
-```sh
-
-```
-
-### /post
-return: 
-```JSON
-
-
-
-
 **Documentacion API**
 ----
   
