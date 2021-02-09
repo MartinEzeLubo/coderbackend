@@ -1,12 +1,12 @@
 **Documentacion URLs**
 
 * **URL**
-    http://localhost:8080/api/productos/vista
+    http://localhost:8080/productos/vista
 * **Respuesta:**
     Muestra el listado de productos guardados
 
 * **URL**
-    http://localhost:8080/api/productos/alta
+    http://localhost:8080/productos/alta
 * **Respuesta:**
     Muestra el formulario de alta de productos
 
